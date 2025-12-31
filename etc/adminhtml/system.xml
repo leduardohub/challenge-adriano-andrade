@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+@copyright  Copyright (c) 2023 Digital Hub (https://digitalhub.com.br)
+@author     Dev Team <devteam@digitalhub.com.br>
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="digitalhub_rule_by_device" translate="label" type="text" sortOrder="150" showInWebsite="0" showInStore="0" showInDefault="1">
+            <label>Custom sales rule</label>
+            <tab>sales</tab>
+            <resource>Magento_Backend::sales</resource>
+            <group id="general" type="text" translate="label" showInDefault="1" showInWebsite="0" showInStore="0" sortOrder="10">
+                <label>General</label>
+                <field id="enabled" type="select" sortOrder="10" showInDefault="1" translate="label">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="device_list" type="text" translate="label" showInDefault="1" showInWebsite="0" showInStore="0" sortOrder="20">
+                    <label>Device list</label>
+                    <validate>required-entry</validate>
+                    <comment>List the devices separated by commas, e.g.: Web, Android, IOS</comment>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

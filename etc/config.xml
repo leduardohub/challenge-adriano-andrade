@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+@copyright  Copyright (c) 2023 Digital Hub (https://digitalhub.com.br)
+@author     Dev Team <devteam@digitalhub.com.br>
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <digitalhub_rule_by_device>
+            <general>
+                <enabled>0</enabled>
+                <device_list>WEB, ANDROID, IOS</device_list>
+            </general>
+        </digitalhub_rule_by_device>
+    </default>
+</config>

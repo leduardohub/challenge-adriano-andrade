@@ -1,0 +1,17 @@
+{
+  "name": "digital-hub/module-rule-by-device",
+  "version": "1.0.0",
+  "description": "Módulo responsável por criar e manter as regras de descontos de acordo com o dispositivo do usuário.",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "DigitalHub\\RuleByDevice\\": ""
+    }
+  }
+}

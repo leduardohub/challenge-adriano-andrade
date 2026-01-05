@@ -31,7 +31,7 @@ $rule->setName('Device 10% off MV')
     ->setSimpleAction('by_percent')
     ->setDiscountAmount(10)
     ->setStopRulesProcessing(1)
-    ->setWebsiteIds([$objectManager->get(\Magento\Store\Model\StoreManagerInterface::class)->getStore()->getWebsiteId()])
+    ->setWebsiteIds([$objectManager->get(\Magento\Store\Model\StoreManagerInterface::class)->getDefaultStoreView()->getWebsiteId()])
     ->setCustomerGroupIds([\Magento\Customer\Model\GroupManagement::NOT_LOGGED_IN_ID]);
 
 $conditions = [

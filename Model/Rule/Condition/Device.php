@@ -2,9 +2,24 @@
 namespace DigitalHub\RuleByDevice\Model\Rule\Condition;
 
 use Magento\Rule\Model\Condition\AbstractCondition;
+use Magento\Framework\App\RequestInterface;
+use Magento\Rule\Model\Condition\Context;
+use Magento\Framework\Model\AbstractModel;
+use Magento\Quote\Model\Quote;
 
 class Device extends AbstractCondition
 {
+    private RequestInterface $request;
+
+    public function __construct(
+        Context $context,
+        RequestInterface $request,
+        array $data = []
+    ) {
+        $this->request = $request;
+        parent::__construct($context, $data);
+    }
+
     public function loadAttributeOptions()
     {
         $this->setAttributeOption(['device_type' => __('Dispositivo')]);
@@ -35,12 +50,13 @@ class Device extends AbstractCondition
         ];
     }
 
-    public function validate(\Magento\Framework\Model\AbstractModel $model)
+    public function validate(AbstractModel $model)
     {
         $quote = null;
+
         if (method_exists($model, 'getQuote')) {
             $quote = $model->getQuote();
-        } elseif ($model instanceof \Magento\Quote\Model\Quote) {
+        } elseif ($model instanceof Quote) {
             $quote = $model;
         }
 
@@ -48,27 +64,27 @@ class Device extends AbstractCondition
             return false;
         }
 
-        // normalize device read from quote (may be empty)
-        $device = strtolower(trim((string)$quote->getData('device_type')));
-        // fallback: if quote has no device_type, try to read header from current request (do not mutate quote)
+        // Normalize device from quote (may be empty)
+        $device = strtolower(trim((string) $quote->getData('device_type')));
+
+        // Fallback: read from request header (do not mutate quote)
         if ($device === '') {
             try {
-                $om = \Magento\Framework\App\ObjectManager::getInstance();
-                $request = $om->get(\Magento\Framework\HTTP\PhpEnvironment\Request::class);
-                $deviceHeader = $request->getHeader('X-Device-Type');
+                $deviceHeader = $this->request->getHeader('X-Device-Type');
+
                 if (empty($deviceHeader)) {
-                    // server var fallback
-                    $server = $request->getServer();
-                    if (is_callable([$server, 'get'])) {
-                        $deviceHeader = $server->get('HTTP_X_DEVICE_TYPE');
-                    } elseif (is_array($server)) {
+                    $server = $this->request->getServer();
+                    if (is_array($server)) {
                         $deviceHeader = $server['HTTP_X_DEVICE_TYPE'] ?? null;
                     }
                 }
-                $device = strtolower(trim((string)$deviceHeader));
+
+                $device = strtolower(trim((string) $deviceHeader));
             } catch (\Throwable $e) {
-                // Best-effort device detection must not break quote validation; log and fall back to empty.
-                error_log('Device condition: failed to resolve device type from request: ' . $e->getMessage());
+                // Best-effort detection: must not break rule validation
+                error_log(
+                    'Device condition: failed to resolve device type from request: ' . $e->getMessage()
+                );
                 $device = '';
             }
         }
@@ -77,31 +93,31 @@ class Device extends AbstractCondition
             return false;
         }
 
-        // get condition value which can be a string (comma separated) or an array
+        // Normalize condition values
         $rawValue = $this->getValue();
         $values = [];
+
         if (is_array($rawValue)) {
-            // normalize array values to strings/lowercase
             foreach ($rawValue as $v) {
-                $v = strtolower(trim((string)$v));
+                $v = strtolower(trim((string) $v));
                 if ($v !== '') {
                     $values[] = $v;
                 }
             }
         } else {
-            $raw = trim((string)$rawValue);
+            $raw = trim((string) $rawValue);
             if ($raw === '') {
                 return false;
             }
+
             foreach (array_map('trim', explode(',', $raw)) as $v) {
-                $v = strtolower((string)$v);
+                $v = strtolower((string) $v);
                 if ($v !== '') {
                     $values[] = $v;
                 }
             }
         }
 
-        // final check
         return in_array($device, $values, true);
     }
 }

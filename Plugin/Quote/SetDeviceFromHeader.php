@@ -57,7 +57,10 @@ class SetDeviceFromHeader
         // Try to obtain header from Request object first
         try {
             $value = $this->request->getHeader('X-Device-Type');
-        } catch (\Throwable $_) {
+        } catch (\Throwable $e) {
+            $this->logger->warning(
+                'RuleByDevice: error reading X-Device-Type header: ' . $e->getMessage()
+            );
             $value = null;
         }
 

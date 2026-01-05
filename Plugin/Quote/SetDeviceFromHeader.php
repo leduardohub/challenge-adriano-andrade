@@ -64,7 +64,7 @@ class SetDeviceFromHeader
 
         $value = strtolower(trim((string)$value));
         if ($value === '') {
-            $this->logger->info('RuleByDevice: no X-Device-Type header found on request');
+            $this->logger->info('RuleByDevice: X-Device-Type header is missing or has an empty/whitespace-only value on request');
             return $quote;
         }
 

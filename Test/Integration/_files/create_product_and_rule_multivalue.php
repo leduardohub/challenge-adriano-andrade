@@ -32,7 +32,7 @@ $rule->setName('Device 10% off MV')
     ->setDiscountAmount(10)
     ->setStopRulesProcessing(1)
     ->setWebsiteIds([$objectManager->get(\Magento\Store\Model\StoreManagerInterface::class)->getDefaultStoreView()->getWebsiteId()])
-    ->setCustomerGroupIds([\Magento\Customer\Model\GroupManagement::NOT_LOGGED_IN_ID]);
+    ->setCustomerGroupIds([\Magento\Customer\Model\Group::NOT_LOGGED_IN_ID]);
 
 $conditions = [
     'type' => \Magento\SalesRule\Model\Rule\Condition\Combine::class,

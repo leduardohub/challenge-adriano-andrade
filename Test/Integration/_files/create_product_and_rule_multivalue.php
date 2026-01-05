@@ -52,7 +52,10 @@ $rule->getConditions()->loadArray($conditions);
 $rule->save();
 
 // expose product sku to tests via fixture storage
-\Magento\TestFramework\Fixture\DataFixtureStorageManager::getStorage()->persist('e2e_device_product_mv_sku', $sku);
+/** @var \Magento\Framework\DataObject $productFixture */
+$productFixture = $objectManager->create(\Magento\Framework\DataObject::class);
+$productFixture->setData('sku', $sku);
+\Magento\TestFramework\Fixture\DataFixtureStorageManager::getStorage()->persist('e2e_device_product_mv_sku', $productFixture);
 
 return;
 

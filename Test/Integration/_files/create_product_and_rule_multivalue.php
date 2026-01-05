@@ -9,7 +9,7 @@ $objectManager = Bootstrap::getObjectManager();
 // create product
 /** @var \Magento\Catalog\Model\Product $product */
 $product = $objectManager->create(\Magento\Catalog\Model\Product::class);
-$attributeSetId = 4;
+$attributeSetId = $product->getDefaultAttributeSetId();
 $sku = 'e2e-device-product-mv';
 $product->setTypeId('simple')
     ->setAttributeSetId($attributeSetId)

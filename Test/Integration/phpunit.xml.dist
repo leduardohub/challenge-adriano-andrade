@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.4/phpunit.xsd"
+         colors="true"
+         bootstrap="../../../../../../dev/tests/integration/framework/bootstrap.php">
+    <testsuites>
+        <testsuite name="DigitalHub RuleByDevice Integration Tests">
+            <!-- include everything under this Test/Integration folder -->
+            <directory>./</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <!-- Ensure Magento integration bootstrap uses correct local config names when run from module -->
+        <const name="TESTS_GLOBAL_CONFIG_DIR" value="../../../app/etc"/>
+        <const name="TESTS_INSTALL_CONFIG_FILE" value="etc/install-config-mysql.php"/>
+        <const name="TESTS_POST_INSTALL_SETUP_COMMAND_CONFIG_FILE" value="etc/post-install-setup-command-config.php"/>
+        <const name="TESTS_GLOBAL_CONFIG_FILE" value="etc/config-global.php"/>
+    </php>
+</phpunit>
+

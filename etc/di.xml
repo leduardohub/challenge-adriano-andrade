@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- file: app/code/DigitalHub/RuleByDevice/etc/di.xml -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Quote\Api\CartRepositoryInterface">
+        <plugin name="digitalhub_rulebydevice_set_device"
+                type="DigitalHub\RuleByDevice\Plugin\Quote\SetDeviceFromHeader" sortOrder="10"/>
+    </type>
+
+    <type name="Magento\SalesRule\Model\Rule\Condition\Combine">
+        <plugin name="digitalhub_rulebydevice_combine"
+                type="DigitalHub\RuleByDevice\Plugin\SalesRule\CombinePlugin" sortOrder="10"/>
+    </type>
+</config>

@@ -66,7 +66,9 @@ class Device extends AbstractCondition
                     }
                 }
                 $device = strtolower(trim((string)$deviceHeader));
-            } catch (\Throwable $_) {
+            } catch (\Throwable $e) {
+                // Best-effort device detection must not break quote validation; log and fall back to empty.
+                error_log('Device condition: failed to resolve device type from request: ' . $e->getMessage());
                 $device = '';
             }
         }
